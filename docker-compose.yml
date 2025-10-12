@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: appdb
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: postgrespw
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./user-service/init_db.sql:/docker-entrypoint-initdb.d/user_init.sql:ro
+      - ./order-service/init_db.sql:/docker-entrypoint-initdb.d/order_init.sql:ro
+    ports:
+      - '5432:5432'
+  user-service:
+    build: ./user-service
+    environment:
+      DATABASE_URL: postgresql+asyncpg://appuser:postgrespw@postgres:5432/appdb
+    ports:
+      - '8001:8000'
+    depends_on:
+      - postgres
+  order-service:
+    build: ./order-service
+    environment:
+      DATABASE_URL: postgresql+asyncpg://appuser:postgrespw@postgres:5432/appdb
+      USER_SERVICE_URL: http://user-service:8000
+    ports:
+      - '8002:8000'
+    depends_on:
+      - postgres
+
+volumes:
+  pgdata:
