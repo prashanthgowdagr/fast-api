@@ -4,7 +4,7 @@ metadata:
   name: user-service
   namespace: microservices
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: user-service
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: user-service
-          image: yourrepo/user-service:latest
+          image: pgrs/user-service:latest
           ports:
             - containerPort: 8000
           env:

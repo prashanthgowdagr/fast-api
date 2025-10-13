@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-REGISTRY=${1:-yourrepo}
+REGISTRY=${1:-pgrs}
 
 # build user
 docker build -t ${REGISTRY}/user-service:latest ./user-service
