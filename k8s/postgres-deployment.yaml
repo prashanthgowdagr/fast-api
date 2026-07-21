@@ -35,9 +35,34 @@ spec:
                   name: db-secret
                   key: POSTGRES_PASSWORD
           volumeMounts:
+            - name: init-scripts
+              mountPath: /docker-entrypoint-initdb.d
             - mountPath: /var/lib/postgresql/data
               name: pgdata
       volumes:
         - name: pgdata
           persistentVolumeClaim:
             claimName: pgdata-pvc
+        - name: init-scripts
+          configMap:
+            name: postgres-init-scripts
+
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-scripts
+  namespace: microservices
+data:
+  01_users.sql: |
+    CREATE TABLE IF NOT EXISTS users (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(100) NOT NULL,
+      email VARCHAR(200) NOT NULL UNIQUE
+    );
+  02_orders.sql: |
+    CREATE TABLE IF NOT EXISTS orders (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER NOT NULL,
+      item VARCHAR(200) NOT NULL
+    );
