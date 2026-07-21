@@ -3,5 +3,7 @@ kind: ConfigMap
 metadata:
   name: service-config
   namespace: microservices
+  annotations:
+    harness.io/skip-versioning: "true"
 data:
   USER_SERVICE_URL: http://user-service:8000
