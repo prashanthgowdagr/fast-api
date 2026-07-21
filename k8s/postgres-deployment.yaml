@@ -53,6 +53,8 @@ kind: ConfigMap
 metadata:
   name: postgres-init-scripts
   namespace: microservices
+  annotations:
+    harness.io/skip-versioning: "true"
 data:
   01_users.sql: |
     CREATE TABLE IF NOT EXISTS users (
