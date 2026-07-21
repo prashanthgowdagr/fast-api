@@ -47,7 +47,7 @@ spec:
           configMap:
             name: postgres-init-scripts
 
-
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
